@@ -1,15 +1,12 @@
 ---
 toc: true
 comments: false
-hide: true
 layout: post
-type: help
-title: GitHub Overview
-layout: schedule 
-units: "1,2,3,4,5,6,7,8,9"
-course: csp
+title: Experiment
+description: Example Blog!!!  This shows planning and notes from hacks.
+type: plans
+courses: { compsci: {week: 13} }
 ---
-
 
 <canvas id = "canvas" width = "400px" height = "400px"> </canvas>
 <style>
