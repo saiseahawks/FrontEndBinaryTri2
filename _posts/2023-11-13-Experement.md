@@ -15,7 +15,7 @@ courses: { compsci: {week: 13} }
         border: 2px solid green;
     }
 </style>
-<button>Invert</button>
+<!-- <button>Invert</button> -->
 <script>
     var player = {
         "name" : "player",
