@@ -1,20 +1,17 @@
 ---
 toc: true
 comments: false
-hide: true
 layout: post
-type: help
-title: GitHub Overview
-layout: schedule 
-units: "1,2,3,4,5,6,7,8,9"
-course: csp
+title: Experiment
+description: Example Blog!!!  This shows planning and notes from hacks.
+type: plans
+courses: { compsci: {week: 13} }
 ---
-
 
 <canvas id = "canvas" width = "400px" height = "400px"> </canvas>
 <style>
     #canvas{
-        border-style: solid;
+        border: 2px solid white;
     }
 </style>
 
@@ -68,8 +65,8 @@ course: csp
             },
         },
         "faceInfo":{},
-        "x" : 13,
-        "y" : 2,
+        "x" : 5,
+        "y" : 6,
     };
     var impeadment = {
         "name" : "Second Simple Object",
@@ -78,27 +75,27 @@ course: csp
             "0":{
                 "item" : "b",
                 "x": 2,
-                "y": 2,
+                "y": 12,
             },
             "1":{
                 "item" : "b",
                 "x": 4,
-                "y": 2,
+                "y": 12,
             },
             "2":{
                 "item" : "b",
                 "x": 6,
-                "y": 2,
+                "y": 12,
             },
             "3":{
                 "item" : "b",
                 "x": 8,
-                "y": 2,
+                "y": 12,
             },
         },
         "faceInfo":{},
-        "x" : 14,
-        "y" : 4,
+        "x" : 2,
+        "y" : 12,
     };
     var floor = {
         "name" : "Floor",
@@ -112,20 +109,28 @@ course: csp
                 "y" : 5
             },
             "2":{
-                "x" : 400,
+                "x" : 50,
                 "y" : 5
             },
             "3":{
-                "x" : 400,
+                "x" : 50,
                 "y" : 0
             }
         },
-        "x": 10,
-        "y": 3
+        "x": 0,
+        "y": 0,
+    }
+    var floorBarrier = {
+        "relatedTo" : 2,
+        "x" : 0,
+        "y" : 0,
+        "width" : 50,
+        "height" : 5
     }
     var objNames = [dummyObject, impeadment, floor]
-    var rows = 20
-    var cols = 20
+    var barrierNames = [floorBarrier]
+    var rows = 25
+    var cols = 25
     var result = ""
     addEventListener("keydown", function(event){
     if(event.defaultPrevented){
@@ -133,42 +138,77 @@ course: csp
     }
     switch (event.key) {
         case "w":
-            result = movement("w")
+            if(detectIntersect(0, -1)){
+                result = movement("w")
+            }
             break;
         case "a":
-            result = movement("a")
+            if(detectIntersect(1, 0)){
+                result = movement("a")
+            }
             break;
         case "s":
-            result = movement("s")
+            if(detectIntersect(0, -1)){
+                result = movement("s")
+            }
             break;
         case "d":
-            result = movement("d")
+            if(detectIntersect(1, 0)){
+                result = movement("d")
+            }
             break;
+        case "q":
+            rotation(moves);
         default:
             break;
     }
     drawPath(result, 25, 25)
     })
-    function overLay(canvasWidth, canvasHeight){
+    function rotation(moves){
+        var positions = [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]]
+    }
+    
+
+    function detectIntersect(playerX, playerY){
+        var barrier = barrierNames[0] 
+        var relatedShape = objNames[barrier["relatedTo"]]
+        var isAir = true
+        console.log("Related Shape is", relatedShape)
+
+        console.log("X check player is", parseInt(Math.floor(0.5 * canvas.width) / 25))
+        console.log("X check 1 is", relatedShape["x"] - 5 > parseInt(Math.floor(0.5 * canvas.width / 25)) || parseInt(Math.floor(0.5 * canvas.width / 25)) >= relatedShape["x"] + barrier["width"] - 5)
+        console.log("X check 1 nums are", barrier["width"] + relatedShape["x"], relatedShape["x"])
+
+        console.log("Y check player is", parseInt(Math.floor(0.6 * canvas.height) / 25))
+        console.log("Y check 1 is", relatedShape["y"] > parseInt(Math.floor(0.6 * canvas.height / 25)) || parseInt(Math.floor(0.6 * canvas.height / 25)) >= relatedShape["y"] + barrier["height"])
+        console.log("Y check 1 nums are", barrier["height"] + relatedShape["y"], relatedShape["y"])
+
+        if(relatedShape["y"] + playerY - 1 > parseInt(Math.floor(0.6 * canvas.height / 25)) || parseInt(Math.floor(0.6 * canvas.height / 25)) > relatedShape["y"] + barrier["height"] - playerY - 1){
+        }
+        else if(relatedShape["x"] - 5 - playerX > parseInt(Math.floor(0.5 * canvas.width / 25)) || parseInt(Math.floor(0.5 * canvas.width / 25)) > relatedShape["x"] + barrier["width"] - 5 + playerX){
+        }
+        else{
+            isAir = false    
+        }
+        return isAir
+    }
+
+    function overLay(canvasWidth, canvasHeight, xMid, yMid){
         var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d")
-        ctx.fillRect(canvas.width / 2, (0.75 * canvas.height), canvasWidth, canvas.height / canvasHeight)
+        ctx.fillStyle = "#0080FF"
+        ctx.fillRect((canvas.width * 0.5) + xMid, (0.6 * canvas.height), canvasWidth, canvasHeight)
 
     }
 
     function drawPath(xPlain, horizontalDistance, heightDistance){
         console.log("Data for Plain is", xPlain, xPlain[0])
         var canvas = document.getElementById("canvas");
+
         var ctx = canvas.getContext("2d")
         horizontalDistance = canvas.width / horizontalDistance
-        // console.log(horizontalDistance)
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         for(var objects in xPlain){
-            console.log("Object is", objNames[objects])
-            console.log("Length of Verts are", Object.keys(objNames[objects]["vertInfo"]).length)
-            ctx.fillStyle = "#00FF80"
-            console.log("Center is", horizontalDistance * xPlain[objects]["x"], (canvas.height / heightDistance) * (heightDistance - xPlain[objects]["y"]))
-            ctx.fillRect(horizontalDistance * xPlain[objects]["x"], (canvas.height / heightDistance) * (heightDistance - xPlain[objects]["y"]) - (canvas.height / heightDistance), horizontalDistance, canvas.height / heightDistance)
             for(var verts = 0; verts < Object.keys(objNames[objects]["vertInfo"]).length; verts++){
                 console.log("Verts are", objNames[objects]["vertInfo"][verts])
                 if(verts == 0){
@@ -203,9 +243,15 @@ course: csp
                 // console.log(horizontalDistance * currentPlain)
             }
             ctx.closePath()
+            ctx.fill()
             ctx.stroke()
+            console.log("Object is", objNames[objects])
+            console.log("Length of Verts are", Object.keys(objNames[objects]["vertInfo"]).length)
+            ctx.fillStyle = "#00FF80"
+            console.log("Center is", horizontalDistance * xPlain[objects]["x"], (canvas.height / heightDistance) * (heightDistance - xPlain[objects]["y"]))
+            ctx.fillRect(horizontalDistance * xPlain[objects]["x"], (canvas.height / heightDistance) * (heightDistance - xPlain[objects]["y"] + 1) - (canvas.height / heightDistance), horizontalDistance, canvas.height / heightDistance)
         }
-        overLay(horizontalDistance, heightDistance)
+        overLay(horizontalDistance, canvas.height / heightDistance, xMid, yMid)
     }
     function movement(moves) {
         var vertMoveCt = 0;
@@ -253,7 +299,6 @@ course: csp
                 }
                 break;
         }
-        console.log(player)
         return objNames
         // movedFrom = "Move because of input " + moves;
         // return screenArray;
@@ -274,7 +319,6 @@ course: csp
             if(Object.hasOwn(currentObj, "vertInfo")){
                 for(vertCt = 0; vertCt < Object.keys(currentObj["vertInfo"]).length; vertCt++){
                         var vert = currentObj["vertInfo"][String(vertCt)];
-                        // console.log(currentObj["name"], vertCt, "is", vert["x"], vert["y"])
                         var vertX = vert["x"] + currentObj["x"]
                         var vertY =  vert["y"] + currentObj["y"]
                         var vertXAndY = sortData(vertX, vertY);
@@ -295,7 +339,6 @@ course: csp
                         } else{
                             console.log("Rejected", currentObj["name"], vertX, ",", vertY)
                         }
-                        // console.log("Available Data is", vert)
                 }
             }
         }
@@ -325,7 +368,6 @@ course: csp
                 "color": trueData[sortCt][1]["color"]
             };
         }
-        console.log("TrueData is", trueData)
         return trueData;
     }
 </script>
