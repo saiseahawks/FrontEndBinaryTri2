@@ -8,13 +8,14 @@ type: plans
 courses: { compsci: {week: 13} }
 ---
 
+
 <canvas id = "canvas" width = "400px" height = "400px"> </canvas>
 <style>
     #canvas{
-        border-style: solid;
+        border: 2px solid green;
     }
 </style>
-
+<button>Invert</button>
 <script>
     var player = {
         "name" : "player",
@@ -184,7 +185,7 @@ courses: { compsci: {week: 13} }
                 var currentPlain = xPlain[objects]["vertInfo"][verts]
                 console.log("Current Element would be", currentPlain)
                 if(currentPlain["color"] != undefined){
-                    ctx.fillStyle = String(currentPlain["color"])
+                    ctx.fillStyle = currentPlain["color"]
                 }
                 else{
                     ctx.fillStyle = "#FF0000"
