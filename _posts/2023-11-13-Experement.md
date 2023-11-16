@@ -24,7 +24,7 @@ courses: { compsci: {week: 13} }
 <body>
 
 <canvas id="canvas" width="400px" height="400px"></canvas>
-<button onclick="invertDoesNothing()">Invert</button>
+
 <script>
     var player = {
         "name" : "player",
