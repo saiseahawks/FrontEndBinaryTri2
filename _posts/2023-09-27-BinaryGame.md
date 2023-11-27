@@ -69,7 +69,6 @@
                 ) {
                     console.log("Collision Detected!");
                     gameRunning = false; // Stop the game on collision
-                    invertColors(); // Invert colors on collision
                 }
             }
         }
@@ -108,27 +107,6 @@
         }
 
         setInterval(createObstacle, 1000);  // Create obstacles every second
-
-        function invertColors() {
-            // Invert the canvas background color
-            ctx.fillStyle = "rgb(255, 255, 255)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Get the canvas imageData
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const data = imageData.data;
-
-            // Invert colors
-            for (let i = 0; i < data.length; i += 4) {
-                data[i] = 255 - data[i];     // Red
-                data[i + 1] = 255 - data[i + 1]; // Green
-                data[i + 2] = 255 - data[i + 2]; // Blue
-                // data[i + 3] is the alpha channel (transparency)
-            }
-
-            // Put the modified imageData back to the canvas
-            ctx.putImageData(imageData, 0, 0);
-        }
     </script>
 </body>
 </html>
