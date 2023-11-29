@@ -12,11 +12,9 @@
 </head>
 <body>
     <canvas id="gameCanvas" width="600" height="400"></canvas>
-
     <script>
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
-
         let carX = canvas.width / 2 - 25;
         let carY = canvas.height - 120;
         const CAR_WIDTH = 50;
@@ -25,15 +23,13 @@
         const obstacles = [];
         const keys = {};
         let gameRunning = true;
-
+        let score = 0; // Initialize the score
         document.addEventListener('keydown', function(event) {
             keys[event.key] = true;
         });
-
         document.addEventListener('keyup', function(event) {
             keys[event.key] = false;
         });
-
         function handleInput() {
             // Handle user input
             if (keys['ArrowLeft'] && carX > 0) {
@@ -49,17 +45,14 @@
                 carY += 5;
             }
         }
-
         function updateGame() {
             // Update game state
             if (!gameRunning) {
                 return; // Stop updating if the game is not running
             }
-
             // Move obstacles
             for (let i = 0; i < obstacles.length; i++) {
                 obstacles[i].y += OBSTACLE_SPEED;
-
                 // Check for collision between car and obstacle
                 if (
                     carX < obstacles[i].x + obstacles[i].width &&
@@ -70,34 +63,37 @@
                     console.log("Collision Detected!");
                     gameRunning = false; // Stop the game on collision
                 }
+                // Check if the car passes the obstacle
+                if (obstacles[i].y > canvas.height) {
+                    obstacles.splice(i, 1); // Remove the obstacle
+                    score++; // Increment the score
+                }
             }
         }
-
         function drawGame() {
             // Draw game elements on the canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
             // Draw car
             ctx.fillStyle = "rgb(0, 100, 200)";
             ctx.fillRect(carX, carY, CAR_WIDTH, CAR_HEIGHT);
-
             // Draw obstacles
             ctx.fillStyle = "black";
             for (const obstacle of obstacles) {
                 ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
             }
+            // Display the score
+            ctx.fillStyle = "black";
+            ctx.font = "20px Arial";
+            ctx.fillText("Score: " + score, 10, 30);
         }
-
         function gameLoop() {
             updateGame();
             drawGame();
             handleInput();
             requestAnimationFrame(gameLoop);
         }
-
         // Start the game loop
         gameLoop();
-
         // Example: You can add obstacle creation logic here if needed
         function createObstacle() {
             const obstacleWidth = Math.random() * (150 - 50) + 50;
@@ -105,7 +101,6 @@
             const obstacleY = -20;
             obstacles.push({ x: obstacleX, y: obstacleY, width: obstacleWidth, height: 20 });
         }
-
         setInterval(createObstacle, 1000);  // Create obstacles every second
     </script>
 </body>
