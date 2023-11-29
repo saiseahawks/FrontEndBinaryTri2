@@ -24,6 +24,7 @@
         const keys = {};
         let gameRunning = true;
         let score = 0; // Initialize the score
+        let colorInverted = false; // Flag to track color inversion
         document.addEventListener('keydown', function(event) {
             keys[event.key] = true;
         });
@@ -62,6 +63,7 @@
                 ) {
                     console.log("Collision Detected!");
                     gameRunning = false; // Stop the game on collision
+                    colorInverted = true; // Trigger color inversion
                 }
                 // Check if the car passes the obstacle
                 if (obstacles[i].y > canvas.height) {
@@ -73,6 +75,14 @@
         function drawGame() {
             // Draw game elements on the canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Apply color inversion if needed
+            if (colorInverted) {
+                ctx.fillStyle = "black";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.filter = "invert(100%)";
+            }
+
             // Draw car
             ctx.fillStyle = "rgb(0, 100, 200)";
             ctx.fillRect(carX, carY, CAR_WIDTH, CAR_HEIGHT);
@@ -85,6 +95,9 @@
             ctx.fillStyle = "black";
             ctx.font = "20px Arial";
             ctx.fillText("Score: " + score, 10, 30);
+
+            // Reset color inversion
+            ctx.filter = "none";
         }
         function gameLoop() {
             updateGame();
