@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,7 +11,72 @@
     </style>
 </head>
 <body>
-    <canvas id="gameCanvas" width="600" height="400"></canvas>
+    <div style = "float:left">
+        <canvas id="gameCanvas" width="600" height="400" style = "display:inline-block"></canvas>
+        <div style = "display:inline-block">
+    <div id="originalColor" style="margin-top: 10px;"></div>
+    <div id="invertedColor"></div>
+        <script>
+            function convertColor(color) {
+                // Get the input hex color value
+                // Convert hex to binary
+                const binaryValue = hexToBinary(color);
+                // Invert the binary
+                const invertedBinary = invertBinary(binaryValue);
+                // Convert binary back to hex
+                const invertedHex = binaryToHex(invertedBinary);
+                // Display the result
+                displayColor('originalColor', 'Original Color', color, binaryValue);
+                displayColor('invertedColor', 'Inverted Color', invertedHex, invertedBinary);
+            }
+            function displayColor(elementId, label, color, binary) {
+                // Add spaces every eight bits in the binary representation
+                const spacedBinary = binary.replace(/(.{8})/g, "$1 ");
+                const element = document.getElementById(elementId);
+                element.innerHTML = `
+                    <p>${label}: ${color}</p>
+                    <p>Binary: ${spacedBinary}</p>
+                `;
+                element.style.backgroundColor = color;
+                element.style.color = getContrastColor(color); // Set text color for better visibility
+            }
+            function hexToBinary(hex) {
+                if (!/^[0-9A-Fa-f]+$/.test(hex)) {
+                    throw new Error("Invalid hex input");
+                }
+                let decimalValue = parseInt(hex, 16);
+                let binaryValue = decimalValue.toString(2).padStart(24, '0'); // Ensure 24 bits
+                return binaryValue;
+            }
+            function invertBinary(binaryString) {
+                if (!/^[01]{24}$/.test(binaryString)) {
+                    throw new Error("Invalid binary input");
+                }
+                let invertedBinary = binaryString
+                    .split('')
+                    .map(bit => (bit === '0' ? '1' : '0'))
+                    .join('');
+                return invertedBinary;
+            }
+            function binaryToHex(binaryString) {
+                if (!/^[01]{24}$/.test(binaryString)) {
+                    throw new Error("Invalid binary input");
+                }
+                let decimalValue = parseInt(binaryString, 2);
+                let hexValue = decimalValue.toString(16).toUpperCase().padStart(6, '0'); // Ensure 6 digits
+                return '#' + hexValue;
+            }
+            function getContrastColor(hexColor) {
+                // Function to determine text color based on background color
+                const r = parseInt(hexColor.slice(1, 3), 16);
+                const g = parseInt(hexColor.slice(3, 5), 16);
+                const b = parseInt(hexColor.slice(5, 7), 16);
+                const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+                return brightness > 128 ? 'black' : 'white';
+            }
+        </script>
+        </div>
+    </div>
     <script>
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
@@ -21,6 +85,7 @@
         const CAR_WIDTH = 50;
         const CAR_HEIGHT = 100;
         var OBSTACLE_SPEED = 5;
+        var currentElementPosition = 0
         const POWERUP_SPEED_BOOST = 2;
         const POWERUP_SHIELD_DURATION = 5000; // 5 seconds
         const obstacles = [];
@@ -155,6 +220,7 @@
                 ctx.fillText("Game Over", (canvas.width / 2), canvas.height / 2- 25)
                 ctx.fillText("Click Screen to Try Again", (canvas.width / 2), canvas.height / 2 + 25)
                 canvas.onclick = function(){window.location.reload()}
+                convertColor('FFFF00')
                 canvas.style.filter = "invert(100%)";
             }
         }
@@ -190,7 +256,7 @@
             }
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             // Draw car
-            ctx.fillStyle = "rgb(0, 100, 200)";
+            ctx.fillStyle = "blue";
             ctx.fillRect(carX, carY, CAR_WIDTH, CAR_HEIGHT);
             // Draw obstacles
             ctx.fillStyle = "black";
@@ -269,7 +335,7 @@
             const shieldY = -20;
             shields.push({ x: shieldX, y: shieldY, width: shieldWidth, height: shieldWidth });
         }
-        setInterval(createObstacle, speedBoostActive ? 1000:1200);  // Create obstacles every second
+        setInterval(createObstacle, speedBoostActive ? 1000: 2200);  // Create obstacles every second
         setInterval(createMysteryBox, 5000); // Create mystery boxes every 5 seconds
         setInterval(createSpeedBoost, 7000); // Create speed boosts every 7 seconds
         setInterval(createShield, 10000); // Create shields every 10 seconds
