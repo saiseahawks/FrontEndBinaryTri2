@@ -168,16 +168,16 @@
         convertColor(0)
         function handleInput() {
             // Handle user input
-            if (keys['ArrowLeft'] && carX > 0) {
+            if (keys['ArrowLeft'] || keys['a'] && carX > 0) {
                 carX -= 5;
             }
-            if (keys['ArrowRight'] && carX < canvas.width - CAR_WIDTH) {
+            if (keys['ArrowRight'] || keys['d'] && carX < canvas.width - CAR_WIDTH) {
                 carX += 5;
             }
-            if (keys['ArrowUp'] && carY > 0) {
+            if (keys['ArrowUp'] || keys['w'] && carY > 0) {
                 carY -= 5;
             }
-            if (keys['ArrowDown'] && carY < canvas.height - CAR_HEIGHT) {
+            if (keys['ArrowDown'] || keys['s'] && carY < canvas.height - CAR_HEIGHT) {
                 carY += 5;
             }
         }
