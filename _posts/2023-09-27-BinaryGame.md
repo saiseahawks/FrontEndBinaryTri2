@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Traffic Testing Game</title>
+    <title>Traffic Testing Game Boogollo</title>
     <style>
         canvas {
             background-color: red;
@@ -32,15 +32,19 @@
             // Invert the binary
         // const invertedBinary = invertBinary(binaryValue);
             // Convert binary back to hex
-            const displayedColor = `rgb(${colors[colorIndex].split(" ")[0]}, ${colors[colorIndex].split(" ")[1]}, ${colors[colorIndex].split(" ")[2]})`
-            let invertedHex = "rgb("
+            console.log("Current Color is called as a function")
+            const displayedColors = `${colors[colorIndex].split(" ")[0]},${colors[colorIndex].split(" ")[1]},${colors[colorIndex].split(" ")[2]}`
+            var invertedHex = ""
             for(x = 0; x < 2; x++){
-                invertedHex += parseInt(255 - parseInt(colors[colorIndex].split(" ")[x])) + ", " 
+                invertedHex += parseInt(255 - parseInt(colors[colorIndex].split(" ")[x])) + "," 
             };
-            invertedHex += parseInt(255 - parseInt(colors[colorIndex].split(" ")[2])) + ")"
+            invertedHex += parseInt(255 - parseInt(colors[colorIndex].split(" ")[2]))
             // Display the result
+            console.log("Change should be in", "")
+            // colors[colorSelect] = `${colors[colorIndex].split(" ")[0]},${colors[colorIndex].split(" ")[1]},${colors[colorIndex].split(" ")[2]}`
+            console.log("Colors are", colors, displayedColors)
             console.log("Inverted color is", invertedHex)
-            displayColor('originalColor', 'Original Color', displayedColor, "notAvailable");
+            displayColor('originalColor', 'Original Color', displayedColors, "notAvailable");
             displayColor('invertedColor', 'Inverted Color', invertedHex, "notAvailable");
         }
         function displayColor(elementId, label, colorToFill, binary) {
@@ -49,12 +53,15 @@
             const element = document.getElementById(elementId);
             element.innerText = ""
             const displayProperText = document.createTextNode( `
-                ${label}: ${colorToFill}`)
+                ${label}:
+                Red: ${parseInt(colorToFill.split(",")[0]).toString(2)}
+                Green: ${parseInt(colorToFill.split(",")[1]).toString(2)}
+                Blue: ${parseInt(colorToFill.split(",")[2]).toString(2)}`)
                 // ` <p>Binary: ${spacedBinary}</p>
             // `;
             console.log("Color is", colorToFill)
             // element.style.backgroundColor = colorToFill;
-            element.style.color = // getContrastColor(colorToFill); // Set text color for better visibility
+            // element.style.color = // getContrastColor(colorToFill); // Set text color for better visibility
             element.appendChild(displayProperText)
         }
         function hexToBinary(hex) {
@@ -127,16 +134,22 @@
             switch(event.target.id){
                 case "redSlide":
                     console.log("Red value is A", colors[colorSelect].split(" ")[0])
-                    colors[colorSelect].split(" ")[0] = event.target.value
+                    colors[colorSelect] = String(event.target.value) + " " + String(colors[colorSelect].split(" ")[1] + " " + String(colors[colorSelect].split(" ")[2]))
+                    document.getElementById("orginalColor").innerText = document.createTextNode( `
+                ${label}:
+                Red: ${parseInt(colorToFill.split(",")[0]).toString(2)}
+                Green: ${parseInt(colorToFill.split(",")[1]).toString(2)}
+                Blue: ${parseInt(colorToFill.split(",")[2]).toString(2)}`)
                     break
                 case "greenSlide":
                     console.log("Green value is A", colors[colorSelect].split(" ")[1])
-                    colors[colorSelect].split(" ")[1] = event.target.value
+                    colors[colorSelect] = String(colors[colorSelect].split(" ")[0]) + " " + String(event.target.value) + " " + String(colors[colorSelect].split(" ")[2])
                     break
                 case "blueSlide":
                     console.log("Blue value is A", colors[colorSelect].split(" ")[2], "from", colors[colorSelect], "part of", colors[colorSelect].split(" "))
-                    colors[colorSelect].split(" ")[2] = event.target.value
-                    colors[colorSelect] = String(colors[colorSelect].split(" ")[0] + " " + colors[colorSelect].split(" ")[1] + " " + colors[colorSelect].split(" ")[2])
+                    // colors[colorSelect].split(" ")[2] = event.target.value
+                    colors[colorSelect] = String(colors[colorSelect].split(" ")[0] + " " + colors[colorSelect].split(" ")[1] + " " + event.target.value)
+                    console.log("Final Output for blue is", colors[colorSelect], "color select value is,", colorSelect)
                     break
             }
             console.log("Changed Value From", event.target.id, "Is", event.target.value)
@@ -168,16 +181,13 @@
         convertColor(0)
         function handleInput() {
             // Handle user input
-            if ((keys['ArrowLeft'] || keys['a']) && carX > 0) {
+            if ((keys['ArrowLeft'] || keys['a']) && carX > 0){ 
                 carX -= 5;
-            }
-            if ((keys['ArrowRight'] || keys['d']) && carX < canvas.width - CAR_WIDTH) {
+            } if((keys['ArrowRight'] || keys['d']) && carX < canvas.width - CAR_WIDTH){
                 carX += 5;
-            }
-            if ((keys['ArrowUp'] || keys['w']) && carY > 0) {
+            } if ((keys['ArrowUp'] || keys['w']) && carY > 0){
                 carY -= 5;
-            }
-            if ((keys['ArrowDown'] || keys['s']) && carY < canvas.height - CAR_HEIGHT) {
+            } if ((keys['ArrowDown'] || keys['s']) && carY < canvas.height - CAR_HEIGHT){
                 carY += 5;
             }
         }
@@ -219,7 +229,7 @@
             }
             // Move mystery boxes
             for (let i = 0; i < mysteryBoxes.length; i++) {
-                mysteryBoxes[i].y += OBSTACLE_SPEED;
+                mysteryBoxes[i].y += speedBoostActive ? OBSTACLE_SPEED * 0.5: OBSTACLE_SPEED;
                 // Check for collision between car and mystery box
                 if (
                     carX < mysteryBoxes[i].x + mysteryBoxes[i].width &&
@@ -234,7 +244,7 @@
             }
             // Move speed boosts
             for (let i = 0; i < speedBoosts.length; i++) {
-                speedBoosts[i].y += OBSTACLE_SPEED;
+                speedBoosts[i].y += speedBoostActive ? OBSTACLE_SPEED * 0.5: OBSTACLE_SPEED;
                 // Check for collision between car and speed boost
                 if (
                     carX < speedBoosts[i].x + speedBoosts[i].width &&
@@ -249,7 +259,7 @@
             }
             // Move shields
             for (let i = 0; i < shields.length; i++) {
-                shields[i].y += OBSTACLE_SPEED
+                shields[i].y += speedBoostActive ? OBSTACLE_SPEED * 0.5: OBSTACLE_SPEED
                 // Check for collision between car and shield
                 if (
                     carX < shields[i].x + shields[i].width &&
@@ -376,6 +386,7 @@
             }
             const obstacleY = -20;
             obstacles.push({ x: obstacleX, y: obstacleY, width: obstacleWidth, height: 20 });
+            setTimeout(createObstacle, speedBoostActive ? 2000: 1000)
         }
         function createMysteryBox() {
             const boxWidth = 30;
@@ -396,10 +407,10 @@
             shields.push({ x: shieldX, y: shieldY, width: shieldWidth, height: shieldWidth });
         }
         function startUp(){
-            setInterval(createObstacle, speedBoostActive ? 1000: 2200);  // Create obstacles every second
-            setInterval(createMysteryBox, 5000); // Create mystery boxes every 5 seconds
-            setInterval(createSpeedBoost, 7000); // Create speed boosts every 7 seconds
-            setInterval(createShield, 10000); // Create shields every 10 seconds
+            setTimeout(createObstacle, 1000)  // Create obstacles every second
+            setInterval(createMysteryBox, speedBoostActive ? 11000: 5000); // Create mystery boxes every 5 seconds
+            setInterval(createSpeedBoost, speedBoostActive ? 15400: 7000); // Create speed boosts every 7 seconds
+            setInterval(createShield, speedBoostActive ? 220000: 10000); // Create shields every 10 seconds
             gameLoop()
         }
     </script>
