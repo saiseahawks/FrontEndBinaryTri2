@@ -51,18 +51,16 @@
             // Add spaces every eight bits in the binary representation
             // const spacedBinary = binary.replace(/(.{8})/g, "$1 ");
             const element = document.getElementById(elementId);
-            element.innerText = ""
-            const displayProperText = document.createTextNode( `
+            element.innerText =  `
                 ${label}:
                 Red: ${parseInt(colorToFill.split(",")[0]).toString(2)}
                 Green: ${parseInt(colorToFill.split(",")[1]).toString(2)}
-                Blue: ${parseInt(colorToFill.split(",")[2]).toString(2)}`)
+                Blue: ${parseInt(colorToFill.split(",")[2]).toString(2)}`
                 // ` <p>Binary: ${spacedBinary}</p>
             // `;
             console.log("Color is", colorToFill)
             // element.style.backgroundColor = colorToFill;
             // element.style.color = // getContrastColor(colorToFill); // Set text color for better visibility
-            element.appendChild(displayProperText)
         }
         function hexToBinary(hex) {
             if (!/^[0-9A-Fa-f]+$/.test(hex)) {
@@ -135,11 +133,8 @@
                 case "redSlide":
                     console.log("Red value is A", colors[colorSelect].split(" ")[0])
                     colors[colorSelect] = String(event.target.value) + " " + String(colors[colorSelect].split(" ")[1] + " " + String(colors[colorSelect].split(" ")[2]))
-                    document.getElementById("orginalColor").innerText = document.createTextNode( `
-                ${label}:
-                Red: ${parseInt(colorToFill.split(",")[0]).toString(2)}
-                Green: ${parseInt(colorToFill.split(",")[1]).toString(2)}
-                Blue: ${parseInt(colorToFill.split(",")[2]).toString(2)}`)
+                    document.getElementById("originalColor").innerText =  `
+                Original Color: Red: ${parseInt(colors[colorSelect].split(" ")[0]).toString(2)} Green: ${parseInt(colors[colorSelect].split(" ")[1]).toString(2)} Blue: ${parseInt(colors[colorSelect].split(" ")[2]).toString(2)}`
                     break
                 case "greenSlide":
                     console.log("Green value is A", colors[colorSelect].split(" ")[1])
