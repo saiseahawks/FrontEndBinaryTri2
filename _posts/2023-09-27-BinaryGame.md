@@ -50,15 +50,15 @@
         function displayColor(elementId, label, colorToFill, binary) {
             // Add spaces every eight bits in the binary representation
             // const spacedBinary = binary.replace(/(.{8})/g, "$1 ");
+            console.log("Color for", label, "is", colorToFill)
             const element = document.getElementById(elementId);
             element.innerText =  `
                 ${label}:
-                Red: ${parseInt(colorToFill.split(",")[0]).toString(2)}
-                Green: ${parseInt(colorToFill.split(",")[1]).toString(2)}
-                Blue: ${parseInt(colorToFill.split(",")[2]).toString(2)}`
+                Red: ${"0".repeat(8 - parseInt(colorToFill.split(",")[0]).toString(2).length)}${parseInt(colorToFill.split(",")[0]).toString(2)}
+                Green: ${"0".repeat(8 - parseInt(colorToFill.split(",")[1]).toString(2).length)}${parseInt(colorToFill.split(",")[1]).toString(2)}
+                Blue: ${"0".repeat(8 - parseInt(colorToFill.split(",")[2]).toString(2).length)}${parseInt(colorToFill.split(",")[2]).toString(2)}`
                 // ` <p>Binary: ${spacedBinary}</p>
             // `;
-            console.log("Color is", colorToFill)
             // element.style.backgroundColor = colorToFill;
             // element.style.color = // getContrastColor(colorToFill); // Set text color for better visibility
         }
@@ -133,18 +133,40 @@
                 case "redSlide":
                     console.log("Red value is A", colors[colorSelect].split(" ")[0])
                     colors[colorSelect] = String(event.target.value) + " " + String(colors[colorSelect].split(" ")[1] + " " + String(colors[colorSelect].split(" ")[2]))
-                    document.getElementById("originalColor").innerText =  `
-                Original Color: Red: ${parseInt(colors[colorSelect].split(" ")[0]).toString(2)} Green: ${parseInt(colors[colorSelect].split(" ")[1]).toString(2)} Blue: ${parseInt(colors[colorSelect].split(" ")[2]).toString(2)}`
+                    var seperatedColors = colors[colorSelect].split(" ")
+                    var invertedColor = "" 
+                    seperatedColors.forEach(function(element, index){
+                        invertedColor += (255 - seperatedColors[index]) + ",";
+                    })
+                    console.log("Inverted color is", invertedColor)
+                    displayColor('originalColor', 'Original Color', colors[colorSelect].replaceAll(" ", ","), "notAvailable");
+                    displayColor('invertedColor', 'Inverted Color', String(invertedColor), "notAvailable");
+            // displayColor('invertedColor', 'Inverted Color', invertedHex, "notAvailable");
                     break
                 case "greenSlide":
                     console.log("Green value is A", colors[colorSelect].split(" ")[1])
                     colors[colorSelect] = String(colors[colorSelect].split(" ")[0]) + " " + String(event.target.value) + " " + String(colors[colorSelect].split(" ")[2])
+                    var seperatedColors = colors[colorSelect].split(" ")
+                    var invertedColor = "" 
+                    seperatedColors.forEach(function(element, index){
+                        invertedColor += (255 - seperatedColors[index]) + ",";
+                    })
+                    console.log("Inverted color is", invertedColor)
+                    displayColor('originalColor', 'Original Color', colors[colorSelect].replaceAll(" ", ","), "notAvailable");
+                    displayColor('invertedColor', 'Inverted Color', String(invertedColor), "notAvailable");
                     break
                 case "blueSlide":
                     console.log("Blue value is A", colors[colorSelect].split(" ")[2], "from", colors[colorSelect], "part of", colors[colorSelect].split(" "))
                     // colors[colorSelect].split(" ")[2] = event.target.value
                     colors[colorSelect] = String(colors[colorSelect].split(" ")[0] + " " + colors[colorSelect].split(" ")[1] + " " + event.target.value)
-                    console.log("Final Output for blue is", colors[colorSelect], "color select value is,", colorSelect)
+                    var seperatedColors = colors[colorSelect].split(" ")
+                    var invertedColor = "" 
+                    seperatedColors.forEach(function(element, index){
+                        invertedColor += (255 - seperatedColors[index]) + ",";
+                    })
+                    console.log("Inverted color is", invertedColor)
+                    displayColor('originalColor', 'Original Color', colors[colorSelect].replaceAll(" ", ","), "notAvailable");
+                    displayColor('invertedColor', 'Inverted Color', String(invertedColor), "notAvailable");
                     break
             }
             console.log("Changed Value From", event.target.id, "Is", event.target.value)
