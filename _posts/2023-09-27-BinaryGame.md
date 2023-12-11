@@ -40,6 +40,7 @@ courses: { compsci: {week: 15} }
     </style>
 </head>
 <body>
+    <div id = "settingsScreen">Choose your settings and click Start Game</div>
     <div style = "float:left">
         <canvas id="gameCanvas" width="600" height="400" style = "display:inline-block"></canvas>
         <div style = "min-width:300px; display:inline-block;" id = "sideMenu">
@@ -54,7 +55,6 @@ courses: { compsci: {week: 15} }
         </div>
     </div>
     <script>
-        startUp();
         function convertColor(colorIndex) {
             // Get the input hex color value
             // Convert hex to binary
