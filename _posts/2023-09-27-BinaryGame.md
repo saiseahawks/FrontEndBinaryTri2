@@ -1,3 +1,13 @@
+---
+toc: true
+comments: false
+layout: post
+title: Binary Game
+description: thegame
+type: plans
+courses: { compsci: {week: 15} }
+---
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -30,8 +40,7 @@
     </style>
 </head>
 <body>
-    <div id = "settingsScreen">Choose your settings and click Start Game</div>
-    <div style = "float:left;">
+    <div style = "float:left">
         <canvas id="gameCanvas" width="600" height="400" style = "display:inline-block"></canvas>
         <div style = "min-width:300px; display:inline-block;" id = "sideMenu">
             <div id = "originalColor" style = "color:black;"></div>
@@ -45,6 +54,7 @@
         </div>
     </div>
     <script>
+        startUp();
         function convertColor(colorIndex) {
             // Get the input hex color value
             // Convert hex to binary
@@ -444,6 +454,7 @@
             shields.push({ x: shieldX, y: shieldY, width: shieldWidth, height: shieldWidth });
         }
         function startUp(){
+            document.getElementById("settingsScreen").style.display = "none";
             setTimeout(createObstacle, 1000)  // Create obstacles every second
             setInterval(createMysteryBox, speedBoostActive ? 11000: 5000); // Create mystery boxes every 5 seconds
             setInterval(createSpeedBoost, speedBoostActive ? 15400: 7000); // Create speed boosts every 7 seconds
