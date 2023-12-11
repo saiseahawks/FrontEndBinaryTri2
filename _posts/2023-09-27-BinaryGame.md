@@ -1,3 +1,13 @@
+---
+toc: true
+comments: false
+layout: post
+title: Binary Game
+description: thegame
+type: plans
+courses: { compsci: {week: 15} }
+---
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
