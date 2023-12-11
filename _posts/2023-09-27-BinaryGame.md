@@ -7,7 +7,7 @@
         canvas {
             background-color: red;
             border: 1px solid #000;
-        }
+        } 
         input[type = "range"]{
             accent-color: grey
         }
