@@ -18,30 +18,10 @@ courses: { compsci: {week: 15} }
             background-color: red;
             border: 1px solid #000;
         }
-        input[type = "range"]{
-            accent-color: grey
-        }
-        button{
-            border: none;
-            background-color: #46A254;
-            width: 100%;
-            color: white;
-            clip-path: inset(0px 0px round 5px);
-        }
-        #settingsScreen{
-            text-align: center;
-            background-color: #f0f0f0;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 40px
-        }
     </style>
 </head>
 <body>
-    <div id = "settingsScreen">Choose your settings and click Start Game</div>
-    <div style = "float:left;">
+    <div style = "float:left">
         <canvas id="gameCanvas" width="600" height="400" style = "display:inline-block"></canvas>
         <div style = "min-width:300px; display:inline-block;" id = "sideMenu">
             <div id = "originalColor" style = "color:black;"></div>
@@ -55,6 +35,7 @@ courses: { compsci: {week: 15} }
         </div>
     </div>
     <script>
+        startUp();
         function convertColor(colorIndex) {
             // Get the input hex color value
             // Convert hex to binary
@@ -454,6 +435,7 @@ courses: { compsci: {week: 15} }
             shields.push({ x: shieldX, y: shieldY, width: shieldWidth, height: shieldWidth });
         }
         function startUp(){
+            document.getElementById("settingsScreen").style.display = "none";
             setTimeout(createObstacle, 1000)  // Create obstacles every second
             setInterval(createMysteryBox, speedBoostActive ? 11000: 5000); // Create mystery boxes every 5 seconds
             setInterval(createSpeedBoost, speedBoostActive ? 15400: 7000); // Create speed boosts every 7 seconds
